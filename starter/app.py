@@ -12,7 +12,7 @@ def create_app(test_config=None):
     setup_db(app)
     CORS(app)
 
-    #db_drop_and_create_all()
+    # db_drop_and_create_all()
 
     @app.route('/')
     def index():
@@ -204,7 +204,6 @@ def create_app(test_config=None):
         except:
             abort(422)
 
-
     @app.errorhandler(422)
     def unprocessable(error):
         return jsonify({
@@ -213,7 +212,6 @@ def create_app(test_config=None):
             "message": "unprocessable"
         }), 422
 
-
     @app.errorhandler(404)
     def not_found(error):
         return jsonify({
@@ -221,7 +219,6 @@ def create_app(test_config=None):
             "error": 404,
             "message": "resource not found"
         }), 404
-
 
     @app.errorhandler(400)
     def bad_request(error):
@@ -237,11 +234,10 @@ def create_app(test_config=None):
         response.status_code = err.status_code
         return response
 
-
     return app
 
 
 app = create_app()
 
 if __name__ == '__main__':
-    APP.run(host='0.0.0.0', port=8080, debug=True)
+    app.run(host='0.0.0.0', port=8080, debug=True)

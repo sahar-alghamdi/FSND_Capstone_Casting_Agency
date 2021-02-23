@@ -81,14 +81,15 @@ python manage.py db upgrade
 ## API Reference
 
 ### Getting Started
-- Base URL: this app is hosted as a base URL. The backend app is hosted at, http://127.0.0.1:5000/
+- Base URL: this  API is hosted live via Heroku at, https://capstone-casting-agency-2.herokuapp.com/
 - Authentication: 
     - This app required a valid authentication token. A token can be acquired through this [link](https://auth-sahar.us.auth0.com/authorize?audience=casting_agency&response_type=token&client_id=fMfsNx0VutgBsV8JWuYiDHIdKAYQ5X46&redirect_uri=https://127.0.0.1:8080/login-results)
     - Valid tokens for all the roles are provided in setup.sh file
     - Roles:
-        - Casting Assistant: Can view actors and movies.
-        - Casting Director: All permissions a Casting Assistant has and Add or delete an actor from the database. Modify actors or movies.
-        - Executive Producer: All permissions a Casting Director has and add or delete a movie from the database.
+        - Casting Assistant: Can view actors and movies. (email: assistant@test.com, Password: Test@123)
+        - Casting Director: All permissions a Casting Assistant has and Add or delete an actor from the database. Modify actors or movies. (email: director@test.com, Password: Test@123)
+        - Executive Producer: All permissions a Casting Director has and add or delete a movie from the database. (email: executive@test.com, Password: Test@123)
+    - Postman collection `Capstone_casting_agency` can be found in this repository that tests all endpoints.
 
 ### Error Handling 
 Errors are returned as JSON objects in the following format
@@ -111,16 +112,128 @@ The API will return four error types when requests fail:
 
 #### Get /movies
 
+- General
+    - Returns a list of movies objects, success value.
+- Sample: ```curl --location --request GET 'https://capstone-casting-agency-2.herokuapp.com/movies'  --header 'Authorization: Bearer JWT_token'```
+```
+{
+    "movies": [
+        {
+            "id": 1,
+            "release_date": "Sun, 19 Oct 2008 00:00:00 GMT",
+            "title": "Into The Wild"
+        }
+    ],
+    "success": true
+}
+```
+
+
 #### Get /actors
+
+- General
+    - Returns a list of movies objects, success value.
+- Sample: ```curl --location --request GET 'https://capstone-casting-agency-2.herokuapp.com/actors'  --header 'Authorization: Bearer JWT_token'```
+```
+{
+    "actors": [
+        {
+            "age": 35,
+            "gender": "male",
+            "id": 1,
+            "name": "Emile Hirsch"
+        }
+    ],
+    "success": true
+}
+```
 
 #### Post /movies
 
+- General
+    - Creates a new movie. Returns the created movie object and success value.
+- Sample: ```curl --location --request POST 'https://capstone-casting-agency-2.herokuapp.com/moviess'  --header 'Authorization: Bearer JWT_token' --data-raw '{"title": "Into The Wild","release_date": "10-19-2007"}'```
+```
+{
+    "movie": {
+        "id": 1,
+        "release_date": "Fri, 19 Oct 2007 00:00:00 GMT",
+        "title": "Into The Wild"
+    },
+    "success": true
+}
+```
+
 #### Post /actors
+
+- General
+    - Creates a new actor. Returns the created actor object and success value.
+- Sample: ```curl --location --request POST 'https://capstone-casting-agency-2.herokuapp.com/actors'  --header 'Authorization: Bearer JWT_token' --data-raw '{"name": "Emile Hirsch", "age": 35,"gender": "male"}'```
+```
+{
+    "actor": {
+        "age": 35,
+        "gender": "male",
+        "id": 1,
+        "name": "Emile Hirsch"
+    },
+    "success": true
+}
+```
 
 #### Patch /movies/{movie_id}
 
+- General
+    - Modify an existed movie. Returns the modified movie object and success value.
+- Sample: ```curl --location --request PATCH 'https://capstone-casting-agency-2.herokuapp.com/movies/1'  --header 'Authorization: Bearer JWT_token' --data-raw '{"title": "Into The Wild","release_date": "10-19-2007"}'```
+```
+{
+    "movie": {
+        "id": 1,
+        "release_date": "Sun, 19 Oct 2008 00:00:00 GMT",
+        "title": "Into The Wild 2"
+    },
+    "success": true
+}
+```
+
 #### Patch /actors/{actor_id}
+
+- General
+    - Modify an existed actor. Returns the modified actor object and success value.
+- Sample: ```curl --location --request POST 'https://capstone-casting-agency-2.herokuapp.com/actors'  --header 'Authorization: Bearer JWT_token' --data-raw '{"name": "Emile Hirsch", "age": 35,"gender": "male"}'```
+```
+{
+    "actor": {
+        "age": 35,
+        "gender": "male",
+        "id": 1,
+        "name": "Emile Hirsch"
+    },
+    "success": true
+}
+```
 
 #### Delete /movies/{movie_id}
 
+- General:
+    - Deletes the movie of the given ID if it exists. Returns the id of the deleted movie and success value.
+- Sample: ```curl --location --request DELETE 'https://capstone-casting-agency-2.herokuapp.com//movies/1' --header 'Authorization: Bearer JWT_token'```
+```
+{
+    "delete": "1",
+    "success": true
+}
+```
+
 #### Delete /actors/{actor_id}
+
+- General:
+    - Deletes the actor of the given ID if it exists. Returns the id of the deleted actor and success value.
+- Sample: ```curl --location --request DELETE 'https://capstone-casting-agency-2.herokuapp.com//actors/1' --header 'Authorization: Bearer JWT_token'```
+```
+{
+    "delete": "1",
+    "success": true
+}
+```
